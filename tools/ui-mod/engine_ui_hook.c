@@ -677,6 +677,10 @@ static const char *four_deck_settings = UI_ROOT "/settings.conf";
 static const char *product_code_path = "/sys/firmware/devicetree/base/inmusic,product-code";
 
 // The standalone players (SC5000, SC5000M, SC6000, SC6000M).
+// JP11 / JP11S (PRIME GO / GO+) stay off this list. They are 2-deck consoles.
+// An LC6000 assignment binds only as a secondary controller on deck 3 or 4,
+// and this hook does not create those decks on an all-in-one. See
+// docs/LC6000-PRIME-GO-PLUS.md.
 static int player_board(void) {
     char code[8] = "";
     FILE *f = fopen(product_code_path, "r");
