@@ -547,13 +547,15 @@ static void test_config(void) {
             assert(out[0] == (uintptr_t)config && out[1] == 123 && out[2] == 456);
         }
         // Only a player's 4-channel device gets the scratch outputs for decks 3/4.
+        // JP11 / JP11S stay off with the other consoles: PRIME GO / GO+ have no
+        // deck 3/4 scratch pair for an LC6000 layer. docs/LC6000-PRIME-GO-PLUS.md
         char code_path[] = "/tmp/product-code-XXXXXX";
         int cfd = mkstemp(code_path);
         assert(cfd >= 0);
         close(cfd);
         product_code_path = code_path;
-        const char *boards[][2] = {{"JP07", "1"}, {"JP14", "1"}, {"JC11", "0"}, {"JP21", "0"}};
-        for (size_t i = 0; i < 4; i++) {
+        const char *boards[][2] = {{"JP07", "1"}, {"JP14", "1"}, {"JC11", "0"}, {"JP21", "0"}, {"JP11", "0"}, {"JP11S", "0"}};
+        for (size_t i = 0; i < sizeof boards / sizeof boards[0]; i++) {
             FILE *f = fopen(code_path, "w");
             assert(f && fputs(boards[i][0], f) >= 0 && !fclose(f));
             prepare_config((uintptr_t)image, page);
